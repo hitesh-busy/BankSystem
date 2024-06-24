@@ -2,6 +2,15 @@
 
 Welcome to the Bank System Project in Golang! This project aims to replicate the functionalities of a complete bank system, including managing bank accounts, balances, and transactions, all powered by the efficiency and concurrency features of Golang.
 
+## Cron Documentation
+- Using the "github.com/go-co-op/gocron" as primary package to implement. https://github.com/jasonlvhit/gocron is no longer maintained
+- A "service" folder exists in the root directory which contain the helper functions called by the cron
+- **To Test**
+- Create one Bank via the mentioned api
+- Account (Creation will trigger the Email cron)
+- Transaction (Creation will trigger the calculateTransaction cron which shall further call the Email cron) 
+
+
 ## Features
 
 - **Complete Bank System**: This project offers a comprehensive set of APIs to manage various aspects of a bank system, including creating accounts, checking balances, transferring funds, and more.
