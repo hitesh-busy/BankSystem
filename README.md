@@ -33,7 +33,7 @@ To get started with the Bank System Project:
 1. **Clone the Repository**: Clone this repository to your local machine.
 
     ```bash
-    git clone https://github.com/hitesh-busy/bank-system-golang.git
+    git clone https://github.com/hitesh-busy/BankSystem.git
     ```
 
 2. **Install Dependencies**: Make sure you have Go installed on your machine. Then, navigate to the project directory and install the required dependencies.
