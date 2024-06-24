@@ -8,11 +8,11 @@ import (
 )
 
 type Transaction struct {
-	TransactionId uint   `pg:",pk"`                              // primary key
-	AccountID     uint   `pg:"fk:account_id, on_delete:CASCADE"` // foreign key referencing Account.ID
-	Mode          string `pg:",notnull"`
-	ReceiverAccNo uint
-	Amount        float64  `pg:",notnull"`
+	TransactionId uint    `pg:",pk"`
+	AccountID     uint    `pg:"fk:account_id,on_delete:CASCADE"`
+	Mode          string  `pg:",notnull"`
+	ReceiverAccNo uint    
+	Amount        float64 `pg:",notnull"`
 	Account       *Account `pg:"rel:has-one"`
 }
 
@@ -44,11 +44,11 @@ func (transaction *Transaction) InsertTransaction(tx *pg.Tx, rawJson map[string]
 	var sender Account
 	var receiver Account
 
-	transaction.AccountID = uint(rawJson["AccountId"].(float64))
+	transaction.AccountID = uint(rawJson["AccountID"].(float64))
 
 	var amount = rawJson["Amount"].(float64)
 
-	sender.AccountId = uint(rawJson["AccountId"].(float64))
+	sender.AccountId = uint(rawJson["AccountID"].(float64))
 
 	//finding if sender account exists or not
 	err := tx.Model(&sender).WherePK().Select()

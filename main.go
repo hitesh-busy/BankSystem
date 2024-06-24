@@ -13,7 +13,7 @@ import (
 func init() {
 	// Register many to many model so ORM can better recognize m2m relation.
 	// This should be done before dependant models are used.
-	//jo intermediatary table h woh yahan aata h 
+	//jo intermediatary table h woh yahan aata h
 	orm.RegisterTable((*models.CustomerAccount)(nil))
 	database.ConnectToDB()
 }

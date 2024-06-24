@@ -37,10 +37,10 @@ func GetAccount(c *gin.Context) {
 	c.JSON(200, account)
 }
 
-func GetTransactions(c *gin.Context){
+func GetTransactions(c *gin.Context) {
 	accountId := c.Param("account_id")
 	var account models.Account
-	err :=  (&account).FetchById(database.DB, accountId)
+	err := (&account).FetchById(database.DB, accountId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"err No Account exist with this id Reason ": err})
 		return
@@ -64,6 +64,8 @@ func CreateAccount(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"err": "Could not bind the the JSON "})
 		return
 	}
+	body, _ := io.ReadAll(c.Request.Body)
+	fmt.Println("body is ", account, body)
 
 	//valdating JSON
 	err = validate.Struct(&account)
@@ -188,7 +190,6 @@ func DepositMoney(c *gin.Context) {
 	//also have to update the transaction details
 	//err = models.InsertTransaction(tx, rawJSON)
 
-
 	err = tx.Commit()
 	if err != nil {
 		tx.Rollback()
@@ -229,12 +230,12 @@ func WithdrawMoney(c *gin.Context) {
 	if err != nil {
 		// Error occurred during withdrawal
 		c.JSON(http.StatusInternalServerError, gin.H{"err Occurred": err.Error(), "Balance": newAmount})
-		
+
 		// Rollback the transaction
 		if rollbackErr := tx.Rollback(); rollbackErr != nil {
 			log.Fatalln("Error Rolling back transaction ", rollbackErr)
 		}
-		
+
 		return
 	}
 	err = tx.Commit()

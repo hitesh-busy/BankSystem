@@ -13,13 +13,14 @@ var DB *pg.DB
 func ConnectToDB() {
 	// Connect to PostgreSQL database
 	DB = pg.Connect(&pg.Options{
-		User:     "postgres",
+		User:     "hiteshsharma",
 		Password: "1234",
-		Database: "Bank",
+		Database: "Bank1",
 		Addr:     "localhost:5432",
 	})
 	if DB == nil {
 		log.Fatalln("Could not connect to the database ")
+		return
 	}
 	log.Println("Connection to DB successful")
 

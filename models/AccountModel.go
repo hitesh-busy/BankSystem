@@ -7,17 +7,16 @@ import (
 
 	"github.com/go-pg/pg/v10"
 )
-
 type Account struct {
-	Transactions []*Transaction `pg:"rel:has-many"`
-	AccountId    uint           `pg:",pk"`
-	AccountNo    uint
-	Balance      float64
-	Type         string
-	BranchId     uint    `pg:"fk:branch_id,on_delete:SET NULL"`
-	Branch       *Branch `pg:"fk:branch_id rel:has-one"`
-	OpeningDate  time.Time
-	CustomerAcc  []*Customer `pg:"many2many:customer_accounts"`
+	Transactions []*Transaction `pg:"rel:has-many" json:"transactions"`
+	AccountId    uint           `pg:",pk" json:"account_id"`
+	AccountNo    uint           `json:"account_no"`
+	Balance      float64        `json:"balance"`
+	Type         string         `json:"type"`
+	BranchId     uint           `pg:"fk:branch_id,on_delete:SET NULL" json:"branch_id"`
+	Branch       *Branch        `pg:"fk:branch_id rel:has-one" json:"branch"`
+	OpeningDate  time.Time      `json:"opening_date"`
+	CustomerAcc  []*Customer    `pg:"many2many:customer_accounts" json:"customer_accounts"`
 }
 
 func Fetch(db *pg.DB) ([]*Account, error) {
@@ -35,11 +34,13 @@ func (account *Account) FetchById(db *pg.DB, accountId string) error {
 	//basically ismein humne kya kara ki bhai particualr id pe jo account h woh toh aayega hi uska owner customer bhi aayega
 	//this could be achieveed via CustomerAccount Model
 
+	
 	err := db.Model(account).Relation("CustomerAcc").Where("account_id=?", accountId).Select()
 	if err != nil {
 		fmt.Println("Error is ", err)
 		return err
 	}
+	fmt.Println("Insude fetch by Id")
 	return nil
 }
 

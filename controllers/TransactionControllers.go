@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
-	"strconv"
 
+	"github.com/BankSystem/cron"
 	"github.com/BankSystem/database"
 	"github.com/BankSystem/models"
 	"github.com/gin-gonic/gin"
@@ -22,18 +23,18 @@ func GetAllTransactions(c *gin.Context) {
 	c.JSON(200, transaction)
 }
 
-
 func GetAllTransaction(c *gin.Context) {
 	var transaction models.Transaction
 	transactionId := c.Param("transaction_id")
 
-	err := (transaction).FethchTransaction(database.DB,transactionId)
+	err := (transaction).FethchTransaction(database.DB, transactionId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"msg:NO Transactions  ": err.Error()})
 		return
 	}
 	c.JSON(200, transaction)
 }
+
 func CreateTransaction(c *gin.Context) {
 	body, _ := io.ReadAll(c.Request.Body)
 
@@ -44,12 +45,17 @@ func CreateTransaction(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg:": err.Error()})
 		return
 	}
+	fmt.Println("Body is ", rawJson)
 	//check if account exists for this transaction or not
-	err = (&models.Account{}).FetchById(database.DB, strconv.FormatFloat(rawJson["AccountId"].(float64), 'f', -1, 64))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg: Account does not exist for this ": err.Error()})
-		return
-	}
+	// accountIdStr := strconv.FormatFloat(rawJson["AccountId"].(float64), 'f', -1, 64)
+
+	// // Check if account exists for this transaction
+	// account := &models.Account{}
+	// err = account.FetchById(database.DB, accountIdStr)
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"msg": "Account does not exist", "error": err.Error()})
+	// 	return
+	// }
 
 	tx, err := database.DB.Begin()
 	if err != nil {
@@ -66,6 +72,10 @@ func CreateTransaction(c *gin.Context) {
 
 	tx.Commit()
 	c.JSON(200, transaction)
+
+	
+	//only in case of a succesful transction inserted we shall trigger the cron
+	cron.ScheduleTransactionCalculation()
 
 }
 

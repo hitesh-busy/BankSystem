@@ -9,6 +9,7 @@ import (
 	"github.com/BankSystem/database"
 	"github.com/BankSystem/models"
 	"github.com/gin-gonic/gin"
+	cron "github.com/BankSystem/cron"
 )
 
 func GetAllCustomers(c *gin.Context) {
@@ -16,6 +17,10 @@ func GetAllCustomers(c *gin.Context) {
 	result, err := models.FetchCustomers(database.DB)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"err": "Could not fetch the customers"})
+		return
+	}
+	if result == nil {
+		c.JSON(400, gin.H{"msg": "There are no users "})
 		return
 	}
 	c.JSON(200, result)
@@ -94,6 +99,9 @@ func CreateCustomer(c *gin.Context) {
 	}
 	tx.Commit()
 	c.JSON(200, customer)
+
+	//on successful creation of the user, wr shall send the email
+	cron.ScheduleEmail("hitesh@mail.busy.in", "Welcome to Our Service", "Thank you for joining us!")
 
 }
 

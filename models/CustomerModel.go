@@ -10,13 +10,14 @@ import (
 type Customer struct {
 	CustomerId  uint       `pg:",pk"`
 	Account     []*Account `pg:"many2many:customer_accounts"`
-	BranchId    uint       `pg:"fk:customer_id,on_delete:CASCADE,on_update:CASCADE"`
+	BranchId    uint       `pg:"fk:customer_id,on_delete:CASCADE,on_update:CASCADE"  json:"branch_id"`
 	Branch      *Branch    `pg:"rel:has-one"`
-	Name        string
-	PAN         string
-	DOB         time.Time
-	Phone       int
-	Address     string
+	Name        string		`json:"name"`
+	PAN         string		`json:"pan"`
+	Email		string		`json:"email"`
+	DOB         time.Time	`json:"dob"`
+	Phone       int			`json:"phone"`
+	Address     string		`json:"address"`
 	JoiningDate time.Time
 	LeavingDate time.Time
 }
