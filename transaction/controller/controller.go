@@ -1,4 +1,4 @@
-package controllers
+package controller
 
 import (
 	"encoding/json"
@@ -73,7 +73,6 @@ func CreateTransaction(c *gin.Context) {
 	tx.Commit()
 	c.JSON(200, transaction)
 
-	
 	//only in case of a succesful transction inserted we shall trigger the cron
 	cron.ScheduleTransactionCalculation()
 

@@ -1,4 +1,4 @@
-package controllers
+package controller
 
 import (
 	"fmt"
@@ -30,7 +30,7 @@ func CreateBranch(c *gin.Context) {
 		return
 	}
 
-	err = validate.Struct(branch)
+	//err = validate.Struct(branch)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": "Not valid JSON "})
 		return
@@ -116,13 +116,12 @@ func DeleteBranch(c *gin.Context) {
 	c.JSON(200, gin.H{"msg": "Branch Successfully Deleted"})
 }
 
-func GetCustomersOfBranch(c *gin.Context){
+func GetCustomersOfBranch(c *gin.Context) {
 	branchId := c.Param("branch_id")
 
-	
 	customers, err := models.GetCustomers(database.DB, branchId)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"err":"No customers for this branch "})
+		c.JSON(http.StatusInternalServerError, gin.H{"err": "No customers for this branch "})
 		return
 	}
 	c.JSON(200, customers)

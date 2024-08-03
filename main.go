@@ -23,12 +23,7 @@ func main() {
 
 	router := gin.Default()
 
-	routes.BankRoutes(router)
-	routes.BranchRoutes(router)
-	routes.CustomerRoutes(router)
-	routes.AccountRoutes(router)
-	routes.CustomerAccountRoutes(router)
-	routes.TransactionRoutes(router)
+	routes.MountRoutes(router)
 
 	router.Run(":3000")
 

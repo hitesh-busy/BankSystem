@@ -1,4 +1,4 @@
-package controllers
+package controller
 
 import (
 	"encoding/json"
@@ -68,7 +68,7 @@ func CreateAccount(c *gin.Context) {
 	fmt.Println("body is ", account, body)
 
 	//valdating JSON
-	err = validate.Struct(&account)
+	//err = validate.Struct(&account)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": "Not valid JSON "})
 		return
