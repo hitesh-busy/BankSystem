@@ -1,4 +1,4 @@
-package controllers
+package controller
 
 import (
 	"fmt"
@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"time"
 
+	cron "github.com/BankSystem/cron"
 	"github.com/BankSystem/database"
 	"github.com/BankSystem/models"
 	"github.com/gin-gonic/gin"
-	cron "github.com/BankSystem/cron"
 )
 
 func GetAllCustomers(c *gin.Context) {
@@ -65,7 +65,7 @@ func CreateCustomer(c *gin.Context) {
 		return
 	}
 
-	err = validate.Struct(customer)
+	//err = validate.Struct(customer)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": "Not valid JSON "})
 		return
